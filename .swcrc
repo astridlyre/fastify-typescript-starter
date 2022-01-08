@@ -1,0 +1,14 @@
+{
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": false,
+      "dynamicImport": true,
+      "privateMethod": true,
+      "decorators": true,
+      "topLevelAwait": true,
+      "importMeta": true
+    },
+    "target": "es2022"
+  }
+}

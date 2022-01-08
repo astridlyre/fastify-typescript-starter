@@ -1,0 +1,43 @@
+{
+  "name": "fastify-typescript-starter",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/server.ts",
+  "scripts": {
+    "test": "jest --watch",
+    "build": "esbuild src/server.ts --bundle --platform=node --outdir=dist",
+    "watch": "esbuild src/server.ts --bundle --platform=node --outdir=dist --watch",
+    "start": "node dist/server.js",
+    "dev": "nodemon dist/server.js"
+  },
+  "keywords": [],
+  "author": "Erin Burton",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/core": "^1.2.127",
+    "@swc/jest": "^0.2.15",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "eslint": "^8.6.0",
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.15",
+    "ts-jest": "^27.1.2",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@ebflat9/fp": "^1.2.62",
+    "@sinclair/typebox": "^0.23.2",
+    "fastify": "^3.25.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.(t|j)sx?$": [
+        "@swc/jest"
+      ]
+    }
+  }
+}
