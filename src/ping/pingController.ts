@@ -19,7 +19,8 @@ export const getPing = {
     _request: FastifyRequest,
     _reply: FastifyReply,
   ) {
-    return { success: true }
+    const response: PingType = { success: true }
+    return response
   },
 }
 

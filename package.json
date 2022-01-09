@@ -6,9 +6,8 @@
   "scripts": {
     "test": "jest --watch",
     "build": "esbuild src/server.ts --bundle --platform=node --outdir=dist",
-    "watch": "esbuild src/server.ts --bundle --platform=node --outdir=dist --watch",
-    "start": "node dist/server.js",
-    "dev": "nodemon dist/server.js"
+    "dev": "concurrently 'esbuild src/server.ts --bundle --platform=node --outdir=dist --watch' 'nodemon dist/server.js'",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "Erin Burton",
@@ -20,6 +19,7 @@
     "@types/node": "^17.0.8",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
+    "concurrently": "^7.0.0",
     "eslint": "^8.6.0",
     "jest": "^27.4.7",
     "nodemon": "^2.0.15",

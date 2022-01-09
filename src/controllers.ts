@@ -12,7 +12,7 @@ export interface IController {
 export function createRegisterControllers(...controllers: IController[]) {
   return function registerControllers(server: FastifyInstance) {
     controllers.forEach(({ controller, prefix }) =>
-      server.register(controller, { prefix }),
+      server.register(controller, { prefix: `/api/v1${prefix}` }),
     )
   }
 }
