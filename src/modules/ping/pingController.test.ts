@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getPing } from './pingController'
+import { getPing } from '.'
 
 test('getPing should return {success: true}', () =>
   getPing

@@ -29,7 +29,10 @@
   "dependencies": {
     "@ebflat9/fp": "^1.2.62",
     "@sinclair/typebox": "^0.23.2",
-    "fastify": "^3.25.3"
+    "fastify": "^3.25.3",
+    "fastify-cors": "^6.0.2",
+    "fastify-helmet": "^7.0.0",
+    "fastify-rate-limit": "^5.7.0"
   },
   "jest": {
     "preset": "ts-jest",

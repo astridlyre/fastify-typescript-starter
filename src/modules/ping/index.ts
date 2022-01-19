@@ -1,10 +1,5 @@
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
-import {
-  FastifyInstance,
-  FastifyPluginOptions,
-  FastifyReply,
-  FastifyRequest,
-} from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { Ping, PingType } from './pingTypes'
 
 export const getPing = {
@@ -22,16 +17,4 @@ export const getPing = {
     const response: PingType = { success: true }
     return response
   },
-}
-
-export const PingController = {
-  controller: <Options extends FastifyPluginOptions = Record<never, never>>(
-    fastify: FastifyInstance,
-    _opts: Options,
-    done: (err?: Error) => void,
-  ) => {
-    fastify.route(getPing)
-    done()
-  },
-  prefix: '/ping',
 }

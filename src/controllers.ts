@@ -1,15 +1,20 @@
 /* eslint-disable no-unused-vars */
 import { FastifyInstance, FastifyPluginCallback } from 'fastify'
-import { PingController } from './ping/pingController'
+import * as modules from './modules'
 
 export type IRegisterControllers = (server: FastifyInstance) => void
 
 export interface IController {
   controller: FastifyPluginCallback
   prefix: string
+  env: string
 }
 
-export function createRegisterControllers(...controllers: IController[]) {
+/*
+ * createRegisterControllers creates a register function which takes an instance
+ * of a Fastify server and loads the IController modules as routes.
+ */
+export function createRegisterControllers(controllers: IController[]) {
   return function registerControllers(server: FastifyInstance) {
     controllers.forEach(({ controller, prefix }) =>
       server.register(controller, { prefix: `/api/v1${prefix}` }),
@@ -17,5 +22,6 @@ export function createRegisterControllers(...controllers: IController[]) {
   }
 }
 
-export const DefaultRegisterControllers =
-  createRegisterControllers(PingController)
+export const DefaultRegisterControllers = createRegisterControllers(
+  Object.values(modules),
+)
