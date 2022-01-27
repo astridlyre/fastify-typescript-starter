@@ -9,6 +9,12 @@
       "topLevelAwait": true,
       "importMeta": true
     },
-    "target": "es2022"
+    "target": "es2022",
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
+    }
   }
 }
