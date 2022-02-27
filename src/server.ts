@@ -1,59 +1,48 @@
-import { DefaultRegisterControllers as RegisterControllers } from './controllers'
-import { default as helmet } from 'fastify-helmet'
-import { default as cors } from 'fastify-cors'
-import { default as rateLimit } from 'fastify-rate-limit'
-import { build } from './app'
-import { loadConfiguration } from './config'
-import type { ENV } from './config'
-;(async function main() {
-  const env = (process.env.NODE_ENV ?? 'production') as ENV
-  const server = build({
-    RegisterControllers,
+import helmet from 'fastify-helmet'
+import cors from 'fastify-cors'
+import rateLimit from 'fastify-rate-limit'
+// import { db } from './db'
+import build from './app'
+import { withControllers } from './controllers'
+
+async function main() {
+  const server = await build({
+    withControllers,
     fastifyOptions: {
       logger: true,
     },
   })
 
-  /*
-   * Security specific plugins for production
-   */
-  if (env === 'production') {
-    // Helmet
+  if (server.config.NODE_ENV === 'production') {
     server.register(helmet)
-
-    // CORS
     server.register(cors)
 
-    // Rate Limiting
     await server.register(rateLimit, {
       global: true,
       max: 100,
       timeWindow: '1 minute',
     })
 
-    // Set default 404 Handler to restrict guessing of 404s
     server.setNotFoundHandler(
       { preHandler: server.rateLimit() },
-      function (_request, reply) {
-        reply.code(404).send({ error: 'Unknown Endpoint' })
-      },
+      (_req, reply) => reply.code(404).send({ error: 'Unknown endpoint' }),
     )
   }
 
-  // Load configuration
-  const config = await loadConfiguration(env)
-
-  // Start the server
   try {
-    server.listen(config.PORT ?? 3000, (error, address) => {
-      if (error) {
-        console.error(error)
+    server.listen(server.config.PORT ?? 3000, async (err, addr) => {
+      if (err) {
+        server.log.error(err)
+        // await db.$disconnect()
         process.exit(1)
       }
-      console.log(`Server listening at ${address}`)
+      server.log.info(`Server listening at ${addr}`)
     })
   } catch (err) {
-    console.error(err)
+    server.log.error(err)
+    // await db.$disconnect()
     process.exit(1)
   }
-})()
+}
+
+main()

@@ -1,15 +1,23 @@
-import { default as Fastify, FastifyServerOptions } from 'fastify'
-import { IRegisterControllers } from './controllers'
+import type { FastifyServerOptions } from 'fastify'
+import fastify from 'fastify'
+import type { RegisterControllersType } from './controllers'
+import withConfig from '~/lib/config'
+import withJWT from '~/lib/jwt'
 
-interface IBuildOptions {
-  RegisterControllers: IRegisterControllers
+type BuildType = {
+  withControllers: RegisterControllersType
   fastifyOptions: FastifyServerOptions
 }
 
-export function build({ RegisterControllers, fastifyOptions }: IBuildOptions) {
-  const app = Fastify(fastifyOptions)
+export default async function build({
+  withControllers,
+  fastifyOptions,
+}: BuildType) {
+  const app = fastify(fastifyOptions)
 
-  RegisterControllers(app)
+  await withConfig(app)
+  await withJWT(app)
+  withControllers(app)
 
   return app
 }

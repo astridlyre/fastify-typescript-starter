@@ -1,27 +1,21 @@
 /* eslint-disable no-unused-vars */
-import { FastifyInstance, FastifyPluginCallback } from 'fastify'
-import * as modules from './modules'
+import type { FastifyInstance, FastifyPluginCallback } from 'fastify'
+import modules from './modules'
 
-export type IRegisterControllers = (server: FastifyInstance) => void
+export type RegisterControllersType = (fastify: FastifyInstance) => void
 
-export interface IController {
+export type ControllerType = {
   controller: FastifyPluginCallback
   prefix: string
   env: string
 }
 
-/*
- * createRegisterControllers creates a register function which takes an instance
- * of a Fastify server and loads the IController modules as routes.
- */
-export function createRegisterControllers(controllers: IController[]) {
-  return function registerControllers(server: FastifyInstance) {
-    controllers.forEach(({ controller, prefix }) =>
-      server.register(controller, { prefix: `/api/v1${prefix}` }),
-    )
+export function createRegisterControllers(controllers: ControllerType[]) {
+  return function registerControllers(fastify: FastifyInstance) {
+    controllers.forEach(({ controller, prefix }) => {
+      fastify.register(controller, { prefix: `/api${prefix}` })
+    })
   }
 }
 
-export const DefaultRegisterControllers = createRegisterControllers(
-  Object.values(modules),
-)
+export const withControllers = createRegisterControllers(Object.values(modules))

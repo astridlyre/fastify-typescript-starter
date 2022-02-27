@@ -1,25 +1,16 @@
 /* eslint-disable no-unused-vars */
-import type {
-  FastifyInstance,
-  FastifyPluginOptions,
-  RouteOptions,
-} from 'fastify'
-import * as ping from './ping'
+import type { FastifyInstance, FastifyPluginOptions } from 'fastify'
+import PingController from './ping'
+// import AuthController from './auth'
 
-export interface IControllerConfig {
+type ControllerConfig = {
   prefix: string
   env: string
 }
 
-/*
- * createController creates a controller object from a modules' exported
- * handlers. Each handler is a Fastify RouteOptions object.
- *
- * @returns an IController
- */
 function createController(
-  module: { [key: string]: RouteOptions },
-  config: IControllerConfig,
+  module: (fastify: FastifyInstance) => void,
+  config: ControllerConfig,
 ) {
   return {
     controller: <Options extends FastifyPluginOptions = Record<never, never>>(
@@ -27,17 +18,24 @@ function createController(
       _opts: Options,
       done: (err?: Error) => void,
     ) => {
-      for (const handler of Object.values(module)) {
-        fastify.route(handler)
-      }
+      module(fastify)
       done()
     },
-    env: config.env,
     prefix: config.prefix,
+    env: config.env,
   }
 }
 
-export const PingModule = createController(ping, {
+/* export const Auth = createController(AuthController, {
   env: 'all',
-  prefix: '/ping',
-})
+  prefix: '/auth',
+}) */
+
+const modules = {
+  ping: createController(PingController, {
+    env: 'all',
+    prefix: '/ping',
+  }),
+}
+
+export default modules
