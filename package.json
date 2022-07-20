@@ -38,7 +38,7 @@
   "dependencies": {
     "@ebflat9/fp": "^1.2.63",
     "@prisma/client": "^3.10.0",
-    "@sinclair/typebox": "^0.23.4",
+    "@sinclair/typebox": "^0.24.1",
     "argon2": "^0.28.4",
     "fastify": "^3.27.2",
     "fastify-cors": "^6.0.3",
